@@ -1,0 +1,55 @@
+create database payrollService1;
+show databases;
+use payrollService1;
+
+create table employeePayroll (id int primary key auto_increment, name varchar(20), salary varchar(20),
+startDate varchar(20));
+desc employeePayroll;
+
+insert into employeePayroll (name,salary,startDate) values ('Rakesh','50000','1-05-2022'), ('deepak','60000','1-2-2022'), 
+('rahul', '30000', '2-2-2022'), ('ruhi', '40000', '3-2-2022'); 
+select *from employeePayroll;
+select salary from employeePayroll where name = 'Rakesh';
+select salary from employeePayroll where name = 'rahul';
+select *from employeePayroll where startDate between cast('1-2-2022' as date) and date(now());
+
+alter table employeePayroll add gender varchar(1);
+update employeePayroll set gender = 'M' where name = 'Rakesh' or name = 'rahul';
+update employeePayroll set gender = 'F' where name = 'karu' or name = 'ruhi';
+
+select min(salary) from employeePayroll;
+select max(salary) from employeePayroll;
+select avg(salary) from employeePayroll;
+select count(*) from employeePayroll;
+select sum(salary) from employeePayroll where gender = 'F' group by gender;
+select sum(salary) from employeePayroll where gender = 'M' group by gender;
+
+alter table employeepayroll add phoneNum varchar(20);
+alter table employeepayroll add address varchar(20);
+alter table employeepayroll add dept varchar(20);
+update employeepayroll set phoneNum = '9272322399' where name ='Rakesh';
+update employeepayroll set phoneNum = '8726001571' where name ='deepak';
+update employeepayroll set phoneNum = '9922101501' where name ='rahul';
+update employeepayroll set address = 'Pune' where name ='rakesh';
+update employeepayroll set address = 'Banglore' where name ='deepak';
+update employeepayroll set address = 'Nagpur' where name ='rahul';
+update employeepayroll set dept = 'Admin' where name ='Rakesh';
+update employeepayroll set dept = 'Tech' where name ='deepak';
+update employeepayroll set dept = 'Store' where name ='rahul';
+alter table employeepayroll drop phoneNum;
+
+alter table employeepayroll add column basicPay varchar(40), add column deductions varchar(40), 
+add column taxablePay varchar(40), add column incomeTax varchar(40), add column netPay varchar(40);
+update employeepayroll set basicPay = '6k', deductions = '2k', taxablePay = '3k' , incomeTax = '4k', netPay = '50k';
+update employeepayroll set gender ='F' where name = 'ruhi';
+
+create table employeeDept (emp_id int primary key auto_increment,
+ dept_id int, designation varchar(40),
+ foreign key (dept_id) references employeePayroll(dept_id));
+ desc employeeDept;  
+ 
+insert into employeeDept(dept_id,designation) values(1, 'Manager'),(2, 'Developer'),(3, 'DevOps'),(4, 'Manager'),(5, 'Director');
+select * from  employeeDept;
+
+select name,dept,salary,designation,gender from employeeDept
+inner join employeePayroll ON employeePayroll.id=employeeDept.dept_id;
